@@ -1,7 +1,6 @@
 {
   "name": "@esper-finance/analytics",
   "private": true,
-  "homepage": "https://analytics.esper.finance",
   "devDependencies": {
     "@popperjs/core": "^2.4.2",
     "@reach/portal": "^0.10.3",

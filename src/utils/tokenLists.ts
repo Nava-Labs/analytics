@@ -6,7 +6,7 @@ import Ajv from 'ajv'
  * Given a URI that may be ipfs, ipns, http, or https protocol, return the fetch-able http(s) URLs for the same content
  * @param uri to convert to fetch-able http url
  */
-function uriToHttp(uri: string): string[] {
+function uriToHttp (uri: string): string[] {
   const protocol = uri.split(':')[0].toLowerCase()
   switch (protocol) {
     case 'https':
@@ -30,7 +30,7 @@ const tokenListValidator = new Ajv({ allErrors: true }).compile(schema)
  * Contains the logic for resolving a list URL to a validated token list
  * @param listUrl list url
  */
-export default async function getTokenList(listUrl: string): Promise<TokenList> {
+export default async function getTokenList (listUrl: string): Promise<TokenList> {
   const urls = uriToHttp(listUrl)
   for (let i = 0; i < urls.length; i++) {
     const url = urls[i]
@@ -45,7 +45,7 @@ export default async function getTokenList(listUrl: string): Promise<TokenList> 
     }
 
     if (!response.ok) {
-      if (isLast) throw new Error(`Failed to download list ${listUrl}`)
+      if (isLast) console.log(`Failed to download list ${listUrl}`)
       continue
     }
 

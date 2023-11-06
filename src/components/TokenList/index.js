@@ -122,7 +122,6 @@ const SORT_FIELD = {
 
 // @TODO rework into virtualized list
 function TopTokenList ({ tokens, itemMax = 10, useTracked = false }) {
-  console.log('top tokens ', tokens)
   // page state
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
@@ -145,7 +144,6 @@ function TopTokenList ({ tokens, itemMax = 10, useTracked = false }) {
       tokens &&
       Object.keys(tokens)
         .filter(key => {
-          console.log('kena token blacklist? ', key, !TOKEN_BLACKLIST.includes(key))
           return !TOKEN_BLACKLIST.includes(key)
         })
         .map(key => tokens[key])
@@ -160,7 +158,6 @@ function TopTokenList ({ tokens, itemMax = 10, useTracked = false }) {
       }
       setMaxPage(Math.floor(formattedTokens.length / itemMax) + extraPages)
     }
-    console.log('formatted tokens ', formattedTokens)
   }, [tokens, formattedTokens, itemMax])
 
   const filteredList = useMemo(() => {
@@ -300,7 +297,6 @@ function TopTokenList ({ tokens, itemMax = 10, useTracked = false }) {
       <List p={0}>
         {filteredList &&
           filteredList.map((item, index) => {
-            console.log('itemss ', item, index)
             return (
               <div key={index}>
                 <ListItem key={index} index={(page - 1) * itemMax + index + 1} item={item} />

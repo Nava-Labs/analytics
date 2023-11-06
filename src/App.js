@@ -81,7 +81,6 @@ const WarningBanner = styled.div`
  * Wrap the component with the header and sidebar pinned tab
  */
 const LayoutWrapper = ({ children, savedOpen, setSavedOpen }) => {
-  console.log('layour')
   return (
     <>
       <ContentWrapper open={savedOpen}>

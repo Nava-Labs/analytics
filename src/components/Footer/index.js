@@ -6,7 +6,7 @@ import Link from '../Link'
 const links = [
   { url: 'https://esper.finance/', text: 'About' },
   { url: 'https://docs.esper.finance/', text: 'Docs' },
-  { url: 'https://github.com/Nava-Labs/esper-contracts', text: 'Code' }
+  { url: 'https://github.com/EsperFinance/esper-contracts', text: 'Code' }
 ]
 
 const FooterLink = ({ children, ...rest }) => (

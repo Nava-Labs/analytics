@@ -63,6 +63,7 @@ function reducer (state, { type, payload }) {
     }
     case UPDATE_USER_POSITION_HISTORY: {
       const { account, historyData } = payload
+      console.log('payload update user ', payload)
       return {
         ...state,
         [account]: { ...state?.[account], [USER_SNAPSHOTS]: historyData }
@@ -71,13 +72,14 @@ function reducer (state, { type, payload }) {
 
     case UPDATE_USER_PAIR_RETURNS: {
       const { account, pairAddress, data } = payload
+      console.log('payload update user ', payload)
       return {
         ...state,
         [account]: {
           ...state?.[account],
           [USER_PAIR_RETURNS_KEY]: {
             ...state?.[account]?.[USER_PAIR_RETURNS_KEY],
-            [pairAddress]: data
+            [pairAddress.id]: data
           }
         }
       }
@@ -366,7 +368,7 @@ export function useUserLiquidityChart (account) {
       } = await client.query({
         query: PAIR_DAY_DATA_BULK(pairs, startDateTimestamp)
       })
-
+      console.log('inside user pair day data ', pairDayDatas)
       const formattedHistory = []
 
       // map of current pair => ownership %
@@ -400,7 +402,7 @@ export function useUserLiquidityChart (account) {
         const relavantDayDatas = Object.keys(ownershipPerPair).map(pairAddress => {
           // find last day data after timestamp update
           const dayDatasForThisPair = pairDayDatas.filter(dayData => {
-            return dayData.pairAddress === pairAddress
+            return dayData.pairAddress.id === pairAddress
           })
           // find the most recent reference to pair liquidity data
           let mostRecent = dayDatasForThisPair[0]
@@ -418,8 +420,9 @@ export function useUserLiquidityChart (account) {
           if (dayData) {
             return (totalUSD =
               totalUSD +
-              (ownershipPerPair[dayData.pairAddress]
-                ? (parseFloat(ownershipPerPair[dayData.pairAddress].lpTokenBalance) / parseFloat(dayData.totalSupply)) *
+              (ownershipPerPair[dayData.pairAddress.id]
+                ? (parseFloat(ownershipPerPair[dayData.pairAddress.id].lpTokenBalance) /
+                    parseFloat(dayData.totalSupply)) *
                   parseFloat(dayData.reserveUSD)
                 : 0))
           } else {

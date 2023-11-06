@@ -371,7 +371,7 @@ export const USER_TRANSACTIONS = gql`
 
 export const PAIR_CHART = gql`
   query pairDayDatas($pairAddress: Bytes!, $skip: Int!) {
-    pairDayDatas(first: 1000, skip: $skip, orderBy: date, orderDirection: asc, where: { pairAddress: $pairAddress }) {
+    pairDayDatas(first: 1000, skip: $skip, orderBy: date, orderDirection: asc, where: { pair_in: [$pairAddress] }) {
       id
       date
       dailyVolumeToken0
@@ -384,7 +384,7 @@ export const PAIR_CHART = gql`
 
 export const PAIR_DAY_DATA = gql`
   query pairDayDatas($pairAddress: Bytes!, $date: Int!) {
-    pairDayDatas(first: 1, orderBy: date, orderDirection: desc, where: { pairAddress: $pairAddress, date_lt: $date }) {
+    pairDayDatas(first: 1, orderBy: date, orderDirection: desc, where: { pair_in: [$pairAddress], date_lt: $date }) {
       id
       date
       dailyVolumeToken0
@@ -403,18 +403,18 @@ export const PAIR_DAY_DATA_BULK = (pairs, startTimestamp) => {
   })
   pairsString += ']'
   const queryString = `
-    query days {
-      pairDayDatas(first: 1000, orderBy: date, orderDirection: asc, where: { pairAddress_in: ${pairsString}, date_gt: ${startTimestamp} }) {
-        id
-        pairAddress
-        date
-        dailyVolumeToken0
-        dailyVolumeToken1
-        dailyVolumeUSD
-        totalSupply
-        reserveUSD
+      query days {
+        pairDayDatas(first: 1000, orderBy: date, orderDirection: asc, where: { pair_in: ${pairsString}, date_gt: ${startTimestamp} }) {
+          id
+          pairAddress: pair{ id }
+          date
+          dailyVolumeToken0
+          dailyVolumeToken1
+          dailyVolumeUSD
+          totalSupply
+          reserveUSD
+        }
       }
-    } 
 `
   return gql(queryString)
 }

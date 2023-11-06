@@ -35,7 +35,7 @@ const CHART_VIEW = {
   VOLUME: 'Volume',
   LIQUIDITY: 'Liquidity',
   RATE0: 'Rate 0',
-  RATE1: 'Rate 1',
+  RATE1: 'Rate 1'
 }
 
 const PairChart = ({ address, color, base0, base1 }) => {
@@ -55,7 +55,7 @@ const PairChart = ({ address, color, base0, base1 }) => {
     if (!isClient) {
       return false
     }
-    function handleResize() {
+    function handleResize () {
       setWidth(ref?.current?.container?.clientWidth ?? width)
       setHeight(ref?.current?.container?.clientHeight ?? height)
     }
@@ -66,6 +66,7 @@ const PairChart = ({ address, color, base0, base1 }) => {
   // get data for pair, and rates
   const pairData = usePairData(address)
   let chartData = usePairChartData(address)
+  console.log('chart dataa ', chartData)
   const hourlyData = useHourlyRateData(address, timeWindow)
   const hourlyRate0 = hourlyData && hourlyData[0]
   const hourlyRate1 = hourlyData && hourlyData[1]
@@ -81,12 +82,12 @@ const PairChart = ({ address, color, base0, base1 }) => {
   const below600 = useMedia('(max-width: 600px)')
 
   let utcStartTime = getTimeframe(timeWindow)
-  chartData = chartData?.filter((entry) => entry.date >= utcStartTime)
+  chartData = chartData?.filter(entry => entry.date >= utcStartTime)
 
   if (chartData && chartData.length === 0) {
     return (
       <ChartWrapper>
-        <EmptyCard height="300px">No historical data yet.</EmptyCard>{' '}
+        <EmptyCard height='300px'>No historical data yet.</EmptyCard>{' '}
       </ChartWrapper>
     )
   }
@@ -96,7 +97,7 @@ const PairChart = ({ address, color, base0, base1 }) => {
    * Needs to be raw html for chart API to parse styles
    * @param {*} val
    */
-  function valueFormatter(val) {
+  function valueFormatter (val) {
     if (chartFilter === CHART_VIEW.RATE0) {
       return (
         formattedNum(val) +
@@ -122,7 +123,7 @@ const PairChart = ({ address, color, base0, base1 }) => {
         </RowBetween>
       ) : (
         <OptionsRow>
-          <AutoRow gap="6px" style={{ flexWrap: 'nowrap' }}>
+          <AutoRow gap='6px' style={{ flexWrap: 'nowrap' }}>
             <OptionButton
               active={chartFilter === CHART_VIEW.LIQUIDITY}
               onClick={() => {
@@ -160,7 +161,7 @@ const PairChart = ({ address, color, base0, base1 }) => {
               {pairData.token0 ? formattedSymbol0 + '/' + formattedSymbol1 : '-'}
             </OptionButton>
           </AutoRow>
-          <AutoRow justify="flex-end" gap="6px">
+          <AutoRow justify='flex-end' gap='6px'>
             <OptionButton
               active={timeWindow === timeframeOptions.WEEK}
               onClick={() => setTimeWindow(timeframeOptions.WEEK)}
@@ -186,30 +187,30 @@ const PairChart = ({ address, color, base0, base1 }) => {
         <ResponsiveContainer aspect={aspect}>
           <AreaChart margin={{ top: 0, right: 10, bottom: 6, left: 0 }} barCategoryGap={1} data={chartData}>
             <defs>
-              <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={color} stopOpacity={0.35} />
-                <stop offset="95%" stopColor={color} stopOpacity={0} />
+              <linearGradient id='colorUv' x1='0' y1='0' x2='0' y2='1'>
+                <stop offset='5%' stopColor={color} stopOpacity={0.35} />
+                <stop offset='95%' stopColor={color} stopOpacity={0} />
               </linearGradient>
             </defs>
             <XAxis
               tickLine={false}
               axisLine={false}
-              interval="preserveEnd"
+              interval='preserveEnd'
               tickMargin={14}
               minTickGap={80}
-              tickFormatter={(tick) => toNiceDate(tick)}
-              dataKey="date"
+              tickFormatter={tick => toNiceDate(tick)}
+              dataKey='date'
               tick={{ fill: textColor }}
               type={'number'}
               domain={['dataMin', 'dataMax']}
             />
             <YAxis
-              type="number"
-              orientation="right"
-              tickFormatter={(tick) => '$' + toK(tick)}
+              type='number'
+              orientation='right'
+              tickFormatter={tick => '$' + toK(tick)}
               axisLine={false}
               tickLine={false}
-              interval="preserveEnd"
+              interval='preserveEnd'
               minTickGap={80}
               yAxisId={0}
               tickMargin={16}
@@ -217,26 +218,26 @@ const PairChart = ({ address, color, base0, base1 }) => {
             />
             <Tooltip
               cursor={true}
-              formatter={(val) => formattedNum(val, true)}
-              labelFormatter={(label) => toNiceDateYear(label)}
+              formatter={val => formattedNum(val, true)}
+              labelFormatter={label => toNiceDateYear(label)}
               labelStyle={{ paddingTop: 4 }}
               contentStyle={{
                 padding: '10px 14px',
                 borderRadius: 10,
                 borderColor: color,
-                color: 'black',
+                color: 'black'
               }}
               wrapperStyle={{ top: -70, left: -10 }}
             />
             <Area
               strokeWidth={2}
               dot={false}
-              type="monotone"
+              type='monotone'
               name={' (USD)'}
               dataKey={'reserveUSD'}
               yAxisId={0}
               stroke={darken(0.12, color)}
-              fill="url(#colorUv)"
+              fill='url(#colorUv)'
             />
           </AreaChart>
         </ResponsiveContainer>
@@ -282,42 +283,42 @@ const PairChart = ({ address, color, base0, base1 }) => {
             <XAxis
               tickLine={false}
               axisLine={false}
-              interval="preserveEnd"
+              interval='preserveEnd'
               minTickGap={80}
               tickMargin={14}
-              tickFormatter={(tick) => toNiceDate(tick)}
-              dataKey="date"
+              tickFormatter={tick => toNiceDate(tick)}
+              dataKey='date'
               tick={{ fill: textColor }}
               type={'number'}
               domain={['dataMin', 'dataMax']}
             />
             <YAxis
-              type="number"
+              type='number'
               axisLine={false}
               tickMargin={16}
-              tickFormatter={(tick) => '$' + toK(tick)}
+              tickFormatter={tick => '$' + toK(tick)}
               tickLine={false}
-              interval="preserveEnd"
-              orientation="right"
+              interval='preserveEnd'
+              orientation='right'
               minTickGap={80}
               yAxisId={0}
               tick={{ fill: textColor }}
             />
             <Tooltip
               cursor={{ fill: color, opacity: 0.1 }}
-              formatter={(val) => formattedNum(val, true)}
-              labelFormatter={(label) => toNiceDateYear(label)}
+              formatter={val => formattedNum(val, true)}
+              labelFormatter={label => toNiceDateYear(label)}
               labelStyle={{ paddingTop: 4 }}
               contentStyle={{
                 padding: '10px 14px',
                 borderRadius: 10,
                 borderColor: color,
-                color: 'black',
+                color: 'black'
               }}
               wrapperStyle={{ top: -70, left: -10 }}
             />
             <Bar
-              type="monotone"
+              type='monotone'
               name={'Volume'}
               dataKey={'dailyVolumeUSD'}
               fill={color}

@@ -1,5 +1,5 @@
 {
-  "name": "@uniswap/info",
+  "name": "@esper-finance/analytics",
   "private": true,
   "homepage": "https://analytics.esper.finance",
   "devDependencies": {
